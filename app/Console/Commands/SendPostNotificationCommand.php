@@ -40,8 +40,7 @@ class SendPostNotificationCommand extends Command
      * @return int
      */
     public function handle()
-    {
-        $posts = Post::with(['website'])->get();
+    { $posts = Post::with(['website'])->get();
         $users = User::with('websites')->get();
         foreach($posts as $post)
         {
@@ -49,7 +48,7 @@ class SendPostNotificationCommand extends Command
             {
                 if($this->hasUserSubscribedToThisPostWebsite($post, $user))
                 {
-                    $is_user_notified = DB::table('notify_user')->where('user_id', $user->id)->where('post_id', $post_id)->get()->count();
+                    $is_user_notified = DB::table('notify_user')->where('user_id', $user->id)->where('post_id', $post->id)->get()->count();
                     if(!$is_user_notified)
                     {
                         $user->notify(new PostCreateNotification($post));
